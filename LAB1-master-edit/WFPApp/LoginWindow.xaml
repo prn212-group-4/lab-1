@@ -32,16 +32,16 @@
 
             <Grid>
                 <StackPanel Orientation="Horizontal"
-   HorizontalAlignment="Center"
-    Height="82" VerticalAlignment="Top" Width="632">
+                        HorizontalAlignment="Center"
+                        Height="82" VerticalAlignment="Top" Width="632">
                     <TextBlock Text="LOGIN WINDOW"
-  Foreground="White"
-  FontSize="28"
-  FontWeight="Medium"
-  FontFamily="Montserrat"
-  Cursor="Hand"
-  Margin="180,30,0,0" Width="377"
- />
+                          Foreground="White"
+                          FontSize="28"
+                          FontWeight="Medium"
+                          FontFamily="Montserrat"
+                          Cursor="Hand"
+                          Margin="180,30,0,0" Width="377"
+                         />
                 </StackPanel>
                 <StackPanel
                         Orientation="Vertical"
@@ -119,22 +119,18 @@
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
-
-
                     </Button>
-
-
                 </StackPanel>
                 <StackPanel>
                     <Button x:Name="btnCancel"                          
-BorderThickness="0"
-Content="CANCEL"
-Foreground="White"
-FontSize="12"
-FontFamily="Montserrat"
-Cursor="Hand"                           
-Margin="20,350,20,0"
-Click="btnCancel_Click">
+                        BorderThickness="0"
+                        Content="CANCEL"
+                        Foreground="White"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"                           
+                        Margin="20,350,20,0"
+                        Click="btnCancel_Click">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Background" Value="LightSeaGreen"/>
@@ -148,21 +144,16 @@ Click="btnCancel_Click">
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border Width="150" Height="40"
-            CornerRadius="20"
-            Background="{TemplateBinding Background}">
+                                    CornerRadius="20"
+                                    Background="{TemplateBinding Background}">
                                     <ContentPresenter VerticalAlignment="Center"
-                          HorizontalAlignment="Center"/>
+                                     HorizontalAlignment="Center"/>
                                 </Border>
                             </ControlTemplate>
                         </Button.Template>
-
-
                     </Button>
-
                 </StackPanel>
-
             </Grid>
-
         </Border>
     </Grid>
 </Window>

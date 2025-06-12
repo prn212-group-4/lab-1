@@ -18,17 +18,25 @@ namespace WPFApp
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
             AccountMember account = iAccountService.GetAccountById(txtUser.Text);
-            if (account != null && account.MemberPassword.Equals(txtPass.Password) &&
+            try
+            {
+                if (account != null && account.MemberPassword.Equals(txtPass.Password) &&
                 account.MemberRole == 1)
-            {
-                this.Hide();
-                MainWindow mainWindow = new MainWindow();
-                mainWindow.Show();
+                {
+                    this.Hide();
+                    MainWindow mainWindow = new MainWindow();
+                    mainWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("You are not permission !");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("You are not permission !");
+                MessageBox.Show("Login Error: Invalid user infomation");
             }
+            
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
