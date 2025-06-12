@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using BusinessObjects;
@@ -59,23 +60,60 @@ namespace WPFApp
 
         private void btnCreate_Click(object sender, RoutedEventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtProductName.Text))
+            {
+                MessageBox.Show("Please enter a product name.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                txtProductName.Focus();
+                return;
+            }
+            if (!decimal.TryParse(txtPrice.Text, out decimal price) || price < 0)
+            {
+                MessageBox.Show("Please enter a valid non-negative price.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                txtPrice.Focus();
+                return;
+            }
+            if (!short.TryParse(txtUnitsInStock.Text, out short units) || units < 0)
+            {
+                MessageBox.Show("Please enter a valid non-negative stock quantity.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                txtUnitsInStock.Focus();
+                return;
+            }
+            if (cboCategory.SelectedValue == null
+                || !int.TryParse(cboCategory.SelectedValue.ToString(), out int catId))
+            {
+                MessageBox.Show("Please select a category.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                cboCategory.Focus();
+                return;
+            }
+            var product = new Product
+            {
+                ProductName = txtProductName.Text.Trim(),
+                UnitPrice = price,
+                UnitsInStock = units,
+                CategoryId = catId
+            };
+
             try
             {
-                Product product = new Product();
-                product.ProductName = txtProductName.Text;
-                product.UnitPrice = Decimal.Parse(txtPrice.Text);
-                product.UnitsInStock = short.Parse(txtUnitsInStock.Text);
-                product.CategoryId = Int32.Parse(cboCategory.SelectedValue.ToString());
                 iProductService.SaveProduct(product);
+                MessageBox.Show("Product created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show($"Error creating product:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
                 LoadProductList();
             }
+        }
+
+        private void btnDump_Click(object sender, RoutedEventArgs e)
+        {
+            var products = iProductService.GetProducts();
+            foreach (var p in products)
+                Debug.WriteLine($"ID={p.ProductId}, Name={p.ProductName}, CatID={p.CategoryId}, Stock={p.UnitsInStock}, Price={p.UnitPrice}");
+            MessageBox.Show("Products dumped to Debug output.");
         }
 
         private void dgData_SelectionChanged(object sender, SelectionChangedEventArgs e)
