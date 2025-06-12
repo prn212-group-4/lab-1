@@ -80,17 +80,34 @@ namespace WPFApp
 
         private void dgData_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DataGrid dataGrid = sender as DataGrid;
-            DataGridRow row = (DataGridRow)dataGrid.ItemContainerGenerator
-                            .ContainerFromIndex(dataGrid.SelectedIndex);
-            DataGridCell RowColumn = dataGrid.Columns[0].GetCellContent(row).Parent as DataGridCell;
-            string id = ((TextBlock)RowColumn.Content).Text;
-            Product product = iProductService.GetProductById(Int32.Parse(id));
-            txtProductID.Text = product.ProductId.ToString();
-            txtProductName.Text = product.ProductName;
-            txtPrice.Text = product.UnitPrice.ToString();
-            txtUnitsInStock.Text = product.UnitsInStock.ToString();
-            cboCategory.SelectedValue = product.CategoryId;
+            try
+            {
+                if (dgData.SelectedItems == null) return;
+                DataGrid dataGrid = sender as DataGrid;
+                DataGridRow row = (DataGridRow)dataGrid.ItemContainerGenerator.ContainerFromIndex(dataGrid.SelectedIndex);
+                if (row == null) return;
+                var cellContent = dataGrid.Columns[0].GetCellContent(row);
+                if (cellContent == null) return;
+
+                var textBlock = cellContent as TextBlock;
+                if (textBlock == null) return;
+
+                string id = textBlock.Text;
+                if (!int.TryParse(id, out int productId)) return;
+
+                Product product = iProductService.GetProductById(productId);
+                if (product == null) return;
+
+                txtProductID.Text = product.ProductId.ToString();
+                txtProductName.Text = product.ProductName;
+                txtPrice.Text = product.UnitPrice.ToString();
+                txtUnitsInStock.Text = product.UnitsInStock.ToString();
+                cboCategory.SelectedValue = product.CategoryId;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Cannot choose this row !");
+            }
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
