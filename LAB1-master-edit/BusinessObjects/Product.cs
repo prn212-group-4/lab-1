@@ -19,5 +19,6 @@
         public short? UnitsInStock { get; set; }
         public decimal? UnitPrice { get; set; }
         public virtual Category Category { get; set; }
+        public string CategoryName { get; set; }
     }
 }

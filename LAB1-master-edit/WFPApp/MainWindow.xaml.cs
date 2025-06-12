@@ -39,8 +39,14 @@ namespace WPFApp
         {
             try
             {
-                var productList = iProductService.GetProducts();
-                dgData.ItemsSource = productList;
+                var products = iProductService.GetProducts();
+                var categories = iCategoryService.GetCategories();
+                foreach (var p in products)
+                {
+                    p.Category = categories
+                                 .FirstOrDefault(c => c.CategoryId == p.CategoryId);
+                }
+                dgData.ItemsSource = products;
             }
             catch (Exception ex)
             {
@@ -51,6 +57,7 @@ namespace WPFApp
                 resetInput();
             }
         }
+
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
