@@ -171,32 +171,46 @@ namespace WPFApp
 
         private void btnUpdate_Click(object sender, RoutedEventArgs e)
         {
+            if (!int.TryParse(txtProductID.Text, out int id))
+            {
+                MessageBox.Show("You must select a Product!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var product = ProductList.FirstOrDefault(p => p.ProductId == id);
+            if (product == null)
+            {
+                MessageBox.Show("Product not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Cập nhật dữ liệu từ UI
+            product.ProductName = txtProductName.Text.Trim();
+            product.UnitPrice = decimal.Parse(txtPrice.Text);
+            product.UnitsInStock = short.Parse(txtUnitsInStock.Text);
+            var newCatId = (int)cboCategory.SelectedValue;
+            product.CategoryId = newCatId;
+
+            // Lấy Category từ danh sách (có thể thay bằng list đã load sẵn)
+            product.Category = iCategoryService
+                .GetCategories()
+                .FirstOrDefault(c => c.CategoryId == newCatId);
+
             try
             {
-                if (txtProductID.Text.Length > 0)
-                {
-                    Product product = new Product();
-                    product.ProductId = Int32.Parse(txtProductID.Text);
-                    product.ProductName = txtProductName.Text;
-                    product.UnitPrice = Decimal.Parse(txtPrice.Text);
-                    product.UnitsInStock = short.Parse(txtUnitsInStock.Text);
-                    product.CategoryId = Int32.Parse(cboCategory.SelectedValue.ToString());
-                    iProductService.UpdateProduct(product);
-                }
-                else
-                {
-                    MessageBox.Show("You must select a Product !");
-                }
+                iProductService.UpdateProduct(product);
+                MessageBox.Show("Product updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                resetInput();
+                // Không gọi LoadProductList() => UI tự refresh vì INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                LoadProductList();
+                MessageBox.Show($"Error updating product:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {

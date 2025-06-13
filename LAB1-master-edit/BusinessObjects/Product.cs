@@ -1,60 +1,62 @@
-﻿using BusinessObjects;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-public partial class Product : INotifyPropertyChanged
+namespace BusinessObjects
 {
-    public event PropertyChangedEventHandler PropertyChanged;
-    protected void OnPropertyChanged([CallerMemberName] string name = null)
-        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-
-    private string productName;
-    public string ProductName
+    public partial class Product : INotifyPropertyChanged
     {
-        get => productName;
-        set
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propName = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+
+        public int ProductId { get; set; }
+
+        private string _productName;
+        public string ProductName
         {
-            if (productName != value) { productName = value; OnPropertyChanged(); }
+            get => _productName;
+            set { if (_productName != value) { _productName = value; OnPropertyChanged(); } }
         }
-    }
 
-    private int? categoryId;
-    public int? CategoryId
-    {
-        get => categoryId;
-        set
+        private int? _categoryId;
+        public int? CategoryId
         {
-            if (categoryId != value) { categoryId = value; OnPropertyChanged(); }
+            get => _categoryId;
+            set { if (_categoryId != value) { _categoryId = value; OnPropertyChanged(); } }
         }
-    }
 
-    private short? unitsInStock;
-    public short? UnitsInStock
-    {
-        get => unitsInStock;
-        set
+        private short? _unitsInStock;
+        public short? UnitsInStock
         {
-            if (unitsInStock != value) { unitsInStock = value; OnPropertyChanged(); }
+            get => _unitsInStock;
+            set { if (_unitsInStock != value) { _unitsInStock = value; OnPropertyChanged(); } }
         }
-    }
 
-    private decimal? unitPrice;
-    public decimal? UnitPrice
-    {
-        get => unitPrice;
-        set
+        private decimal? _unitPrice;
+        public decimal? UnitPrice
         {
-            if (unitPrice != value) { unitPrice = value; OnPropertyChanged(); }
+            get => _unitPrice;
+            set { if (_unitPrice != value) { _unitPrice = value; OnPropertyChanged(); } }
         }
-    }
 
-    private Category category;
-    public virtual Category Category
-    {
-        get => category;
-        set
+        private Category _category;
+        public virtual Category Category
         {
-            if (category != value) { category = value; OnPropertyChanged(); }
+            get => _category;
+            set { if (_category != value) { _category = value; OnPropertyChanged(); } }
+        }
+
+        public string CategoryName { get; set; }
+
+        public Product() { }
+
+        public Product(int id, string name, int catId, short unitInStock, decimal price)
+        {
+            ProductId = id;
+            ProductName = name;
+            CategoryId = catId;
+            UnitsInStock = unitInStock;
+            UnitPrice = price;
         }
     }
 }
