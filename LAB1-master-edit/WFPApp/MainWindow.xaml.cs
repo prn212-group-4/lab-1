@@ -107,6 +107,11 @@ namespace WPFApp
                 UnitsInStock = units,
                 CategoryId = catId
             };
+            int maxId = 0;
+            foreach (var p in ProductList)
+                if (p.ProductId > maxId)
+                    maxId = p.ProductId;
+            product.ProductId = maxId + 1;
 
             try
             {
@@ -184,14 +189,12 @@ namespace WPFApp
                 return;
             }
 
-            // Cập nhật dữ liệu từ UI
             product.ProductName = txtProductName.Text.Trim();
             product.UnitPrice = decimal.Parse(txtPrice.Text);
             product.UnitsInStock = short.Parse(txtUnitsInStock.Text);
             var newCatId = (int)cboCategory.SelectedValue;
             product.CategoryId = newCatId;
 
-            // Lấy Category từ danh sách (có thể thay bằng list đã load sẵn)
             product.Category = iCategoryService
                 .GetCategories()
                 .FirstOrDefault(c => c.CategoryId == newCatId);

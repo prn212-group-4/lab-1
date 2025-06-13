@@ -84,8 +84,6 @@
             <Button  x:Name="btnCreate" Content="Create" HorizontalAlignment="Left" Margin="29,365,0,16" Grid.Row="6" Grid.RowSpan="2" Width="121"  Background="#FF0099FF" BorderBrush="White" Foreground="White" Grid.ColumnSpan="3" Grid.Column="1" Click="btnCreate_Click"/>
             <Button x:Name="btnUpdate" Content="Update" Grid.Column="3" HorizontalAlignment="Left" Margin="87,365,0,16" Grid.Row="6" Width="118" Background="#FF1B7140" Foreground="White" Grid.RowSpan="2" RenderTransformOrigin="0.37,0.2" Click="btnUpdate_Click"/>
             <Button x:Name="btnDelete" Content="Delete" Grid.Column="3" HorizontalAlignment="Left" Margin="221,365,0,16" Grid.Row="6" Grid.RowSpan="2" Width="127" Foreground="White" Background="#FFA2AA3D" Click="btnDelete_Click"/>
-            <Button Content="Dump Products" Click="btnDump_Click" />
-
             <Button x:Name="btnClose" Content="Close" Grid.Column="3" HorizontalAlignment="Left" Margin="371,365,0,18" Grid.Row="6" Grid.RowSpan="2" Width="120" Background="#FFEF8F18" Foreground="White" Click="btnClose_Click"/>
 
         </Grid>
