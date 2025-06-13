@@ -214,28 +214,38 @@ namespace WPFApp
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (!int.TryParse(txtProductID.Text, out int id))
+            {
+                MessageBox.Show("You must select a Product!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var product = ProductList.FirstOrDefault(p => p.ProductId == id);
+            if (product == null)
+            {
+                MessageBox.Show("Product not found!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            var result = MessageBox.Show($"Are you sure you want to delete '{product.ProductName}'?",
+                "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (result != MessageBoxResult.Yes)
+                return;
+
             try
             {
-                if (txtProductID.Text.Length > 0)
-                {
-                    Product product = new Product();
-                    product.ProductId = Int32.Parse(txtProductID.Text);
-                    iProductService.DeleteProduct(product);
-                }
-                else
-                {
-                    MessageBox.Show("You must select a Product !");
-                }
+                iProductService.DeleteProduct(product);
+                ProductList.Remove(product);
+
+                MessageBox.Show("Product deleted successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                resetInput();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
-            }
-            finally
-            {
-                LoadProductList();
+                MessageBox.Show($"Error deleting product:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private void resetInput()
         {
