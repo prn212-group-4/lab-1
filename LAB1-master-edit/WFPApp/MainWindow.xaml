@@ -56,12 +56,12 @@
 
 
             <DataGrid x:Name="dgData"
-          Margin="4,4,4,63"
-          Grid.Column="2"
-          Grid.Row="6"
-          Grid.ColumnSpan="2"
-          AutoGenerateColumns="False"
-          SelectionChanged="dgData_SelectionChanged">
+            Margin="4,4,4,63"
+            Grid.Column="2"
+            Grid.Row="6"
+            Grid.ColumnSpan="2"
+            AutoGenerateColumns="False"
+            SelectionChanged="dgData_SelectionChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ID"
                             Binding="{Binding ProductId}"

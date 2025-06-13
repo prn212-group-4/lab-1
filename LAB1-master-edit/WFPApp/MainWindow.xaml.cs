@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,12 +13,16 @@ namespace WPFApp
     {
         private readonly IProductService iProductService;
         private readonly ICategoryService iCategoryService;
+        private ObservableCollection<Product> ProductList = new ObservableCollection<Product>();
 
         public MainWindow()
         {
             InitializeComponent();
             iProductService = new ProductService();
             iCategoryService = new CategoryService();
+            dgData.ItemsSource = ProductList;
+            LoadProductList();
+            LoadCategoryList();
         }
 
         public void LoadCategoryList()
@@ -41,12 +46,14 @@ namespace WPFApp
             {
                 var products = iProductService.GetProducts();
                 var categories = iCategoryService.GetCategories();
+
+                ProductList.Clear();
+
                 foreach (var p in products)
                 {
-                    p.Category = categories
-                                 .FirstOrDefault(c => c.CategoryId == p.CategoryId);
+                    p.Category = categories.FirstOrDefault(c => c.CategoryId == p.CategoryId);
+                    ProductList.Add(p);
                 }
-                dgData.ItemsSource = products;
             }
             catch (Exception ex)
             {
@@ -57,6 +64,7 @@ namespace WPFApp
                 resetInput();
             }
         }
+
 
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -103,15 +111,16 @@ namespace WPFApp
             try
             {
                 iProductService.SaveProduct(product);
+                product.Category = iCategoryService
+                    .GetCategories()
+                    .FirstOrDefault(c => c.CategoryId == product.CategoryId);
+                ProductList.Add(product);
                 MessageBox.Show("Product created successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                resetInput();
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Error creating product:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                LoadProductList();
             }
         }
 
