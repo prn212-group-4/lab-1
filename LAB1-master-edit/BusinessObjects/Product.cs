@@ -1,24 +1,60 @@
-﻿namespace BusinessObjects
+﻿using BusinessObjects;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+public partial class Product : INotifyPropertyChanged
 {
-    public partial class Product
+    public event PropertyChangedEventHandler PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string name = null)
+        => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+    private string productName;
+    public string ProductName
     {
-        public Product() { }
-
-        public Product(int id, string name, int catId, short unitInStock, decimal price)
+        get => productName;
+        set
         {
-            this.ProductId = id;
-            this.ProductName = name;
-            this.CategoryId = catId;
-            this.UnitsInStock = unitInStock;
-            this.UnitPrice = price;
+            if (productName != value) { productName = value; OnPropertyChanged(); }
         }
+    }
 
-        public int ProductId { get; set; }
-        public string ProductName { get; set; }
-        public int? CategoryId { get; set; }
-        public short? UnitsInStock { get; set; }
-        public decimal? UnitPrice { get; set; }
-        public virtual Category Category { get; set; }
-        public string CategoryName { get; set; }
+    private int? categoryId;
+    public int? CategoryId
+    {
+        get => categoryId;
+        set
+        {
+            if (categoryId != value) { categoryId = value; OnPropertyChanged(); }
+        }
+    }
+
+    private short? unitsInStock;
+    public short? UnitsInStock
+    {
+        get => unitsInStock;
+        set
+        {
+            if (unitsInStock != value) { unitsInStock = value; OnPropertyChanged(); }
+        }
+    }
+
+    private decimal? unitPrice;
+    public decimal? UnitPrice
+    {
+        get => unitPrice;
+        set
+        {
+            if (unitPrice != value) { unitPrice = value; OnPropertyChanged(); }
+        }
+    }
+
+    private Category category;
+    public virtual Category Category
+    {
+        get => category;
+        set
+        {
+            if (category != value) { category = value; OnPropertyChanged(); }
+        }
     }
 }
